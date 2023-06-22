@@ -1,0 +1,9 @@
+﻿  Application.cpp
+A:\Application\Application\Application.cpp(51,32): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+A:\Application\Application\Application.cpp(206,32): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+A:\Application\Application\Application.cpp(211,31): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
+A:\Application\Application\Application.cpp(235,77): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+A:\Application\Application\Application.cpp(261,32): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+A:\Application\Application\Application.cpp(266,31): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
+A:\Application\Application\Application.cpp(290,77): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  Application.vcxproj -> A:\Application\x64\Debug\Application.exe
