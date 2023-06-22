@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <string>
 #include <fstream>
-//Тест третий на второй коммит!!!!!!!!!!!
+//тект для теста. Хай всем кстати
 #define code "key"
 #define file_path "files/"
 
