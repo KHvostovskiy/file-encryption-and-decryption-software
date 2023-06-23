@@ -5,6 +5,7 @@
 
 #define code "key"
 #define file_path "files/"
+#define file_path_data "files/data.txt"
 
 
 using namespace std;
@@ -21,6 +22,7 @@ void loop();
 void Initialize();
 void encoding();
 void decoding();
+void saves_data(string data);
 string LogicShifr(string usrData, string usrPass);
 string LogicReShifr(string usrData, string usrPass);
 
@@ -43,7 +45,7 @@ int main()
 
 void Initialize()
 {
-	alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$ % &'()*+,-./:;<=>?@[]^_`{|}~ ";
+	alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$ %&'()*+,-./:;<=>?@[]^_`{|}~АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
 	alphabet += char(34);
 	alphabet += char(92);
 	alphbetLenght = size(alphabet);
@@ -107,9 +109,10 @@ void encoding() {
 			file_name.append(".txt");
 			file.open(file_name);
 			string line;
-			while (getline(file, line))
+			while (getline(file, line)) {
 				data += line;
-			data += '\n';
+				data += '\n';
+			}
 			file.close();
 		}
 		cout << "Файл найден\n";
@@ -123,12 +126,15 @@ void encoding() {
 
 	string shifrData = LogicShifr(data, input_key);
 	fout << shifrData;
-	cout << shifrData;
+	//cout << shifrData;
 
 
 	fout.close();
 
-	cout << "Зашифрован файл по пути: " << file_name << " по ключу: " << input_key << "\n";
+	string v_data;
+	v_data = v_data.append("Зашифрован файл по пути: ").append(file_name).append(" по ключу: ").append(input_key).append("\n");
+	if (file_name != "files/data.txt")saves_data(v_data);
+	cout << v_data;
 }
 
 void decoding() {
@@ -167,14 +173,15 @@ void decoding() {
 			file_name.append(".txt");
 			file.open(file_name);
 			string line;
-			while (getline(file, line))
+			while (getline(file, line)) {
 				data += line;
-			data += '\n';
+				data += '\n';
+			}
 			file.close();
 		}
 		cout << "Файл найден\n";
 	}
-	cout << "Введите ключ шифрования\n";
+	cout << "Введите ключ\n";
 	cin >> input_key;
 
 	//Далее механика шифратора
@@ -183,17 +190,31 @@ void decoding() {
 
 	string shifrData = LogicReShifr(data, input_key);
 	fout << shifrData;
-	cout << shifrData;
+	//cout << shifrData;
 
 
 	fout.close();
 
-	cout << "Зашифрован файл по пути: " << file_name << " по ключу: " << input_key << "\n";
+	string v_data;
+	v_data = v_data.append("Расшифрован файл по пути: ").append(file_name).append(" по ключу: ").append(input_key).append("\n");
+	cout << v_data;
+	if (file_name != "files/data.txt")saves_data(v_data);
 }
 string LogicShifr(string usrData, string usrPass)
 {
 	string shifrData;
 	int passLenght = size(usrPass);
+
+	//Генерация ключа цезаря
+	int cezar_sdvig = 0;
+	for (int i = 0; i < size(usrPass); i++) {
+		cezar_sdvig += alphabet.find(usrPass[i]);
+	}
+	if (cezar_sdvig > alphbetLenght) {
+		cezar_sdvig %= alphbetLenght;
+	}
+	//cout << "Cezar: " << cezar_sdvig << "\n";
+	//
 
 	for (int i = 0; i < size(usrData); i++)
 	{
@@ -222,8 +243,14 @@ string LogicShifr(string usrData, string usrPass)
 			a -= alphbetLenght;
 		}
 
+		//шифрование Цезарем
+		a += cezar_sdvig;
+		if (a > alphbetLenght)
+			a -= alphbetLenght;
 
 		shifrData += alphabet[a];
+
+
 	}
 
 	return shifrData;
@@ -232,6 +259,18 @@ string LogicReShifr(string usrData, string usrPass)
 {
 	string data;
 	int passLenght = size(usrPass);
+
+	//Поиск ключа цезаря
+	int cezar_sdvig = 0;
+	for (int i = 0; i < size(usrPass); i++) {
+		cezar_sdvig += alphabet.find(usrPass[i]);
+	}
+	if (cezar_sdvig > alphbetLenght) {
+		cezar_sdvig %= alphbetLenght;
+	}
+	//cout << "Cezar: " << cezar_sdvig << "\n";
+	//
+
 
 	for (int i = 0; i < size(usrData); i++)
 	{
@@ -253,8 +292,12 @@ string LogicReShifr(string usrData, string usrPass)
 		//cout << usrData[i] << '\t' << usrPass[i % passLenght] << '\n';
 		//cout << alphabet.find(usrData[i]) << '\t' << alphabet.find(usrPass[i % passLenght]) << '\n';
 
+		//Расшифрование Цезарем
+		a -= cezar_sdvig;
 
-
+		if (a < 0)
+			a += alphbetLenght;
+		//
 		if (a < 0)
 		{
 			a += alphbetLenght;
@@ -264,7 +307,24 @@ string LogicReShifr(string usrData, string usrPass)
 		data += alphabet[a];
 	}
 
-	cout << "\n\n";
+	//cout << "\n\n";
 
 	return data;
+}
+void saves_data(string data) {
+	string _code = code; //Код от файла
+	ifstream f(file_path_data);
+	string line;
+	string _data;
+	while (getline(f, line)) {
+		_data += line;
+		_data += '\t';
+	}
+	f.close();
+	_data = LogicReShifr(_data, _code);
+	//_data += "\n";
+	_data += data;
+	ofstream y(file_path_data);
+	y << LogicShifr(_data, _code);
+	y.close();
 }
