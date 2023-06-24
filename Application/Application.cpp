@@ -18,6 +18,9 @@ int alphbetLenght = 0;
 
 string input_key;
 string eng_alp = "";
+
+
+// Functions
 void loop();
 void Initialize();
 void encoding();
@@ -48,6 +51,18 @@ void Initialize()
 	alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$ %&'()*+,-./:;<=>?@[]^_`{|}~АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
 	alphabet += char(34);
 	alphabet += char(92);
+	//
+	///
+	for (int i = 1; i <= 6; i++)
+		alphabet += char(i);
+	for (int i = 11; i <= 22; i++)
+		if (i == 13)
+			continue;
+		else
+			alphabet += char(i);
+	///
+	//
+
 	alphbetLenght = size(alphabet);
 }
 
@@ -78,6 +93,9 @@ void encoding() {
 	string file_name = file_path;
 	ifstream file;
 
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
 
 	cout << "Введите название файла, который хотите зашифровать\n";
 	cin >> file_name;
@@ -89,8 +107,12 @@ void encoding() {
 
 	if (file) {
 		string line;
-		while (getline(file, line))
+		/*while (getline(file, line))
 		{
+			data += line;
+			data += '\n';
+		}*/
+		while (getline(file, line)) {
 			data += line;
 			data += '\n';
 		}
@@ -123,8 +145,12 @@ void encoding() {
 	//Далее механика шифратора
 	ofstream fout(file_name);
 
+	// delete trash symbol
+	string concept;
+	for (int i = 0; i < size(data) - 1; i++)
+		concept += data[i];
 
-	string shifrData = LogicShifr(data, input_key);
+	string shifrData = LogicShifr(concept, input_key);
 	fout << shifrData;
 	//cout << shifrData;
 
@@ -141,6 +167,10 @@ void decoding() {
 	string data;
 	string file_name = file_path;
 	ifstream file;
+
+
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 
 
 	cout << "Введите название файла, который хотите расшифровать\n";
@@ -187,8 +217,12 @@ void decoding() {
 	//Далее механика шифратора
 	ofstream fout(file_name);
 
+	// delete trash symbol
+	string concept;
+	for (int i = 0; i < size(data) - 1; i++)
+		concept += data[i];
 
-	string shifrData = LogicReShifr(data, input_key);
+	string shifrData = LogicReShifr(concept, input_key);
 	fout << shifrData;
 	//cout << shifrData;
 
@@ -238,16 +272,11 @@ string LogicShifr(string usrData, string usrPass)
 
 
 
-		if (a > alphbetLenght)
-		{
-			a -= alphbetLenght;
-		}
-
 		//шифрование Цезарем
 		a += cezar_sdvig;
-		if (a > alphbetLenght)
-			a -= alphbetLenght;
 
+
+		a %= alphbetLenght;
 		shifrData += alphabet[a];
 
 
@@ -313,16 +342,23 @@ string LogicReShifr(string usrData, string usrPass)
 }
 void saves_data(string data) {
 	string _code = code; //Код от файла
+
+	// read file data
 	ifstream f(file_path_data);
+
+	// Read from file data by lines
 	string line;
+
+	// Data to work
 	string _data;
+
 	while (getline(f, line)) {
 		_data += line;
 		_data += '\t';
 	}
 	f.close();
+
 	_data = LogicReShifr(_data, _code);
-	//_data += "\n";
 	_data += data;
 	ofstream y(file_path_data);
 	y << LogicShifr(_data, _code);
