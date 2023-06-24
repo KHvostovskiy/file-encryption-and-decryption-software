@@ -48,6 +48,9 @@ int main()
 
 void Initialize()
 {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
 	alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$ %&'()*+,-./:;<=>?@[]^_`{|}~АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
 	alphabet += char(34);
 	alphabet += char(92);
@@ -236,6 +239,9 @@ void decoding() {
 }
 string LogicShifr(string usrData, string usrPass)
 {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
 	string shifrData;
 	int passLenght = size(usrPass);
 
@@ -286,6 +292,9 @@ string LogicShifr(string usrData, string usrPass)
 }
 string LogicReShifr(string usrData, string usrPass)
 {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
 	string data;
 	int passLenght = size(usrPass);
 

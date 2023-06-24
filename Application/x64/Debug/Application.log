@@ -1,9 +1,10 @@
 ﻿  Application.cpp
-A:\Application\Application\Application.cpp(51,32): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-A:\Application\Application\Application.cpp(206,32): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-A:\Application\Application\Application.cpp(211,31): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
-A:\Application\Application\Application.cpp(235,77): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-A:\Application\Application\Application.cpp(261,32): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-A:\Application\Application\Application.cpp(266,31): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
-A:\Application\Application\Application.cpp(290,77): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-  Application.vcxproj -> A:\Application\x64\Debug\Application.exe
+A:\PROGRAMA\file-encryption-and-decryption-software\Application\Application.cpp(69,32): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+A:\PROGRAMA\file-encryption-and-decryption-software\Application\Application.cpp(246,32): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+A:\PROGRAMA\file-encryption-and-decryption-software\Application\Application.cpp(251,31): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
+A:\PROGRAMA\file-encryption-and-decryption-software\Application\Application.cpp(275,77): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+A:\PROGRAMA\file-encryption-and-decryption-software\Application\Application.cpp(299,32): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+A:\PROGRAMA\file-encryption-and-decryption-software\Application\Application.cpp(304,31): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
+A:\PROGRAMA\file-encryption-and-decryption-software\Application\Application.cpp(328,77): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  LINK : не найден или не выполнена сборка A:\PROGRAMA\file-encryption-and-decryption-software\x64\Debug\Application.exe при последней инкрементной компоновке; выполняется полная компоновка
+  Application.vcxproj -> A:\PROGRAMA\file-encryption-and-decryption-software\x64\Debug\Application.exe
