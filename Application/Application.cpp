@@ -34,7 +34,7 @@ int main()
 	// Set Russian language
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	setlocale(LC_ALL, "Rus");
+	//setlocale(LC_ALL, "Rus");
 
 
 	Initialize();
@@ -124,7 +124,8 @@ void encoding() {
 		cout << "Файл найден\n";
 	}
 	else {
-		while (!file) {
+		bool is_open = false;
+		while (!is_open) {
 			cout << "Файл не найден, повторите попытку ввода имени файла, или введите q для выхода\n";
 			cin >> file_name;
 			if (file_name == "q")
@@ -133,10 +134,13 @@ void encoding() {
 			file_name.insert(0, file_path);
 			file_name.append(".txt");
 			file.open(file_name);
-			string line;
-			while (getline(file, line)) {
-				data += line;
-				data += '\n';
+			if (file) {
+				string line;
+				while (getline(file, line)) {
+					data += line;
+					data += '\n';
+				}
+				is_open = true;
 			}
 			file.close();
 		}
@@ -196,7 +200,8 @@ void decoding() {
 		cout << "Файл найден\n";
 	}
 	else {
-		while (!file) {
+		bool is_open = false;
+		while (!is_open) {
 			cout << "Файл не найден, повторите попытку ввода имени файла, или введите q для выхода\n";
 			cin >> file_name;
 			if (file_name == "q")
@@ -205,10 +210,13 @@ void decoding() {
 			file_name.insert(0, file_path);
 			file_name.append(".txt");
 			file.open(file_name);
-			string line;
-			while (getline(file, line)) {
-				data += line;
-				data += '\n';
+			if (file) {
+				string line;
+				while (getline(file, line)) {
+					data += line;
+					data += '\n';
+				}
+				is_open = true;
 			}
 			file.close();
 		}
