@@ -70,6 +70,10 @@ void Initialize()
 }
 
 void loop() {
+
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
 	short choice;
 	cout << "Выберете действие: 1 - расшифровать файл, 2 - зашифровать файл, 3 - выйти\n";
 	cin >> choice;
@@ -92,158 +96,201 @@ void loop() {
 }
 
 void encoding() {
-	string data;
+
 	string file_name = file_path;
+	//char tempFileName[64]{};
+	string tempFileName;
 	ifstream file;
 
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 
 
-	cout << "Введите название файла, который хотите зашифровать\n";
-	cin >> file_name;
-	file_name.insert(0, file_path);
-	file_name.append(".txt");
 
-	file.open(file_name);
+	do{
+
+		cout << "Введите название файла, который хотите зашифровать\n";
+		cin >> file_name;
+		file_name.insert(0, file_path);
+		file_name.append(".txt");
+
+		file.open(file_name);
 
 
-	if (file) {
-		string line;
-		/*while (getline(file, line))
-		{
-			data += line;
-			data += '\n';
-		}*/
-		while (getline(file, line)) {
-			data += line;
-			data += '\n';
-		}
+		/*for (int i = 0; i < size(file_name); i++)
+			tempFileName[i] = file_name[i];*/
+		tempFileName = file_name;
 
-		file.close();
-		cout << "Файл найден\n";
-	}
-	else {
-		bool is_open = false;
-		while (!is_open) {
-			cout << "Файл не найден, повторите попытку ввода имени файла, или введите q для выхода\n";
-			cin >> file_name;
-			if (file_name == "q")
-				return;
+		file_name = "";
 
-			file_name.insert(0, file_path);
-			file_name.append(".txt");
-			file.open(file_name);
-			if (file) {
-				string line;
-				while (getline(file, line)) {
-					data += line;
-					data += '\n';
-				}
-				is_open = true;
-			}
-			file.close();
-		}
-		cout << "Файл найден\n";
-	}
+		if (!file.is_open())
+			cout << "Неправильное имя файла\n";
+		
+	} while (!file.is_open());
+
 	cout << "Введите ключ шифрования\n";
 	cin >> input_key;
 
-	//Далее механика шифратора
-	ofstream fout(file_name);
-
-	// delete trash symbol
-	string concept;
-	for (int i = 0; i < size(data) - 1; i++)
-		concept += data[i];
-
-	string shifrData = LogicShifr(concept, input_key);
-	fout << shifrData;
-	//cout << shifrData;
 
 
-	fout.close();
+	string data;
+	int maxDataSize = 500;
+	char smb=0;
+
+	int i = 1;
+
+	file.get(smb);
+	while (smb)
+	{
+		data += smb;
+		while (i < maxDataSize && file.get(smb))
+		{
+			data += smb;
+			i++;
+		}
+
+		if (!file.get(smb))
+			smb = 0;
+
+
+		// Механика шифрования
+		// create temp file in system
+		string tempName;
+
+		tempName += file_path;
+		tempName += "temp.txt";
+
+		ofstream fout(tempName, ios::app);
+
+
+		fout << LogicShifr(data, input_key);
+
+
+		fout.close();
+
+
+		i = 0;
+		data = "";
+	}
+	
+	file.close();
+
+
+	remove(tempFileName.c_str());
+
+
+	string tempName;
+
+	tempName += file_path;
+	tempName += "temp.txt";
+	
+	rename(tempName.c_str(), tempFileName.c_str());
+	
+
+
+	//("Зашифрован файл по пути: ").append(tempFileName).append(" по ключу: ").append(input_key).append("\n");
 
 	string v_data;
-	v_data = v_data.append("Зашифрован файл по пути: ").append(file_name).append(" по ключу: ").append(input_key).append("\n");
-	if (file_name != "files/data.txt")saves_data(v_data);
+	v_data = v_data.append("Зашифрован файл по пути: ").append(tempFileName).append(" по ключу: ").append(input_key).append("\n");
+	if (tempFileName != "files/data.txt")saves_data(v_data);
 	cout << v_data;
 }
 
 void decoding() {
-	string data;
 	string file_name = file_path;
+	string tempFileName;
 	ifstream file;
-
 
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 
 
-	cout << "Введите название файла, который хотите расшифровать\n";
-	cin >> file_name;
-	file_name.insert(0, file_path);
-	file_name.append(".txt");
 
-	file.open(file_name);
+	do {
+
+		cout << "Введите название файла, который хотите расшифровать\n";
+		cin >> file_name;
+		file_name.insert(0, file_path);
+		file_name.append(".txt");
+
+		file.open(file_name);
 
 
-	if (file) {
-		string line;
-		while (getline(file, line))
-		{
-			data += line;
-			data += '\n';
-		}
+		tempFileName = file_name;
 
-		file.close();
-		cout << "Файл найден\n";
-	}
-	else {
-		bool is_open = false;
-		while (!is_open) {
-			cout << "Файл не найден, повторите попытку ввода имени файла, или введите q для выхода\n";
-			cin >> file_name;
-			if (file_name == "q")
-				return;
+		file_name = "";
 
-			file_name.insert(0, file_path);
-			file_name.append(".txt");
-			file.open(file_name);
-			if (file) {
-				string line;
-				while (getline(file, line)) {
-					data += line;
-					data += '\n';
-				}
-				is_open = true;
-			}
-			file.close();
-		}
-		cout << "Файл найден\n";
-	}
+		if (!file.is_open())
+			cout << "Неправильное имя файла\n";
+
+	} while (!file.is_open());
+
 	cout << "Введите ключ\n";
 	cin >> input_key;
 
-	//Далее механика шифратора
-	ofstream fout(file_name);
-
-	// delete trash symbol
-	string concept;
-	for (int i = 0; i < size(data) - 1; i++)
-		concept += data[i];
-
-	string shifrData = LogicReShifr(concept, input_key);
-	fout << shifrData;
-	//cout << shifrData;
 
 
-	fout.close();
+	string data;
+	int maxDataSize = 500;
+	char smb = 0;
 
+	int i = 1;
+
+	file.get(smb);
+	while (smb)
+	{
+		data += smb;
+		while (i < maxDataSize && file.get(smb))
+		{
+			data += smb;
+			i++;
+		}
+
+		if (!file.get(smb))
+			smb = 0;
+
+
+		// Механика шифрования
+		// create temp file in system
+		string tempName;
+
+		tempName += file_path;
+		tempName += "temp.txt";
+
+		ofstream fout(tempName, ios::app);
+
+
+		fout << LogicReShifr(data, input_key);
+
+
+		fout.close();
+
+
+		i = 0;
+		data = "";
+	}
+
+	file.close();
+
+
+	remove(tempFileName.c_str());
+
+
+	string tempName;
+
+	tempName += file_path;
+	tempName += "temp.txt";
+
+	rename(tempName.c_str(), tempFileName.c_str());
+
+
+
+
+	//("Расшифрован файл по пути: ").append(tempFileName).append(" по ключу: ").append(input_key).append("\n");
 	string v_data;
-	v_data = v_data.append("Расшифрован файл по пути: ").append(file_name).append(" по ключу: ").append(input_key).append("\n");
+	v_data = v_data.append("Расшифрован файл по пути: ").append(tempFileName).append(" по ключу: ").append(input_key).append("\n");
+	if (tempFileName != "files/data.txt")saves_data(v_data);
 	cout << v_data;
-	if (file_name != "files/data.txt")saves_data(v_data);
 }
 string LogicShifr(string usrData, string usrPass)
 {
@@ -357,27 +404,15 @@ string LogicReShifr(string usrData, string usrPass)
 
 	return data;
 }
-void saves_data(string data) {
-	string _code = code; //Код от файла
-
-	// read file data
-	ifstream f(file_path_data);
-
-	// Read from file data by lines
-	string line;
-
-	// Data to work
-	string _data;
-
-	while (getline(f, line)) {
-		_data += line;
-		_data += '\t';
+void saves_data(string _data_) {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	ofstream file(file_path_data, ios::app);
+	//string _code = code; //Код от файла
+	while (size(_data_) % (size(code) - 1) != 0) {
+		_data_.insert(0, "!");
 	}
-	f.close();
-
-	_data = LogicReShifr(_data, _code);
-	_data += data;
-	ofstream y(file_path_data);
-	y << LogicShifr(_data, _code);
-	y.close();
+	file.write(LogicShifr(_data_, code).c_str(), size(_data_));
+	//file << LogicShifr(_data_, code);
+	file.close();
 }
