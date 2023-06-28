@@ -107,7 +107,7 @@ void encoding() {
 
 
 
-	do{
+	do {
 
 		cout << "Введите название файла, который хотите зашифровать\n";
 		cin >> file_name;
@@ -125,8 +125,9 @@ void encoding() {
 
 		if (!file.is_open())
 			cout << "Неправильное имя файла\n";
-		
+
 	} while (!file.is_open());
+
 
 	cout << "Введите ключ шифрования\n";
 	cin >> input_key;
@@ -135,11 +136,16 @@ void encoding() {
 
 	string data;
 	int maxDataSize = 500;
-	char smb=0;
+	char smb = 0;
 
 	int i = 1;
 
 	file.get(smb);
+	if (smb == 0)
+	{
+		cout << "Извините уважаемый пользователь, в вашем файле нет текста\n";
+		return;
+	}
 	while (smb)
 	{
 		data += smb;
@@ -172,7 +178,7 @@ void encoding() {
 		i = 0;
 		data = "";
 	}
-	
+
 	file.close();
 
 
@@ -183,9 +189,9 @@ void encoding() {
 
 	tempName += file_path;
 	tempName += "temp.txt";
-	
+
 	rename(tempName.c_str(), tempFileName.c_str());
-	
+
 
 
 	//("Зашифрован файл по пути: ").append(tempFileName).append(" по ключу: ").append(input_key).append("\n");
@@ -237,6 +243,11 @@ void decoding() {
 	int i = 1;
 
 	file.get(smb);
+	if (smb == 0)
+	{
+		cout << "Извините уважаемый пользователь, в вашем файле нет текста\n";
+		return;
+	}
 	while (smb)
 	{
 		data += smb;
@@ -302,8 +313,8 @@ string LogicShifr(string usrData, string usrPass)
 
 	//Генерация ключа цезаря
 	int cezar_sdvig = 0;
-	for (int i = 0; i < size(usrPass); i++) {
-		cezar_sdvig += alphabet.find(usrPass[i]);
+	for (int i = 0; i < passLenght; i++) {
+	cezar_sdvig += alphabet.find(usrPass[i]);
 	}
 	if (cezar_sdvig > alphbetLenght) {
 		cezar_sdvig %= alphbetLenght;
@@ -355,7 +366,7 @@ string LogicReShifr(string usrData, string usrPass)
 
 	//Поиск ключа цезаря
 	int cezar_sdvig = 0;
-	for (int i = 0; i < size(usrPass); i++) {
+	for (int i = 0; i < passLenght; i++) {
 		cezar_sdvig += alphabet.find(usrPass[i]);
 	}
 	if (cezar_sdvig > alphbetLenght) {
